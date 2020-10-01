@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add device by IP</title>
+
+    <link rel="stylesheet" href="./css/bootstrap.css">
+</head>
+<body>
+
+    <form style="width: 90%; margin: auto;">
+        <div>
+            <h6 style="text-align: center; margin-top: 10px;">Enter IP of Bulb</h6>
+            <input class="input-group" style="margin-bottom: 5px; line-height: 34px;" type="text" id="addip" placeholder="IP of Bulb" autofocus>
+        </div>
+        <button class="btn btn-secondary" style="width: 100%; margin: auto;" type="submit">Add Bulb</button>
+    </form>
+
+    <script>
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        const form = document.querySelector('form');
+
+        form.addEventListener('submit', submitForm);
+
+        function submitForm(e) {
+
+            // cancel the submission of form
+            e.preventDefault();
+            const ip = document.querySelector('#addip').value;
+
+            ipcRenderer.send('ip:add', ip);
+        }
+    </script>
+    
+</body>
+</html>

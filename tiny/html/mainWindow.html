@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Wiz Lightning Control</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="./css/bootstrap.css">
+    
+    <link rel="stylesheet" href="./css/style.css">
+
+    <link rel="stylesheet" href="./css/slider.css">    
+
+</head>
+<body>
+
+    <div id="container">
+        <!-- <div class="row" id="row"> -->
+
+            <!-- Device selection space -->
+            <section>
+                <ul class="list-group" id="device-list">
+                    
+                </ul>
+            </section>
+
+            <!-- Device interaction space -->
+            <main data-ip="">
+                <p>
+                    Choose a device from the menu on right
+                </p>
+
+                <div id="functions" hidden>
+
+                    <div id="basic">
+
+                        <button class="btn btn-secondary" id="toggle">
+                            Toggle <span class="badge badge-success">On</span> 
+                        </button>
+
+                        <div id="modeSelector">
+
+                            <span>Modes: </span>
+    
+                            <select class="custom-select" id="modes" name="modes" onchange="loadMode()">
+                                <option value="rgb">RGBCW</option>
+                                <option value="scene">Scene</option>
+                                <option value="color-temp">White (Color Temp)</option>
+                            </select>
+    
+                        </div>
+
+                    </div>
+
+                    <div id="mode-container">
+
+                        <div id="rgb" hidden>
+    
+                            <div class="range-slider" id="red">
+                                <input class="range-slider__range rgbcw" type="range" value="128" min="1" max="255">
+                                <span class="range-slider__value rgbcw-span">0</span>
+                            </div>
+
+                            <div class="range-slider" id="green">
+                                <input class="range-slider__range rgbcw" type="range" value="128" min="1" max="255">
+                                <span class="range-slider__value rgbcw-span">0</span>
+                            </div>
+
+                            <div class="range-slider" id="blue">
+                                <input class="range-slider__range rgbcw" type="range" value="128" min="1" max="255">
+                                <span class="range-slider__value rgbcw-span">0</span>
+                            </div>
+
+                            <div class="range-slider" id="warm">
+                                <input class="range-slider__range rgbcw" type="range" value="128" min="1" max="255">
+                                <span class="range-slider__value rgbcw-span">0</span>
+                            </div>
+
+                            <div class="range-slider" id="cold">
+                                <input class="range-slider__range rgbcw" type="range" value="128" min="1" max="255">
+                                <span class="range-slider__value rgbcw-span">0</span>
+                            </div>
+    
+                        </div>
+
+                        <div id="scene" hidden>
+
+                            <span>Scenes: </span>
+
+                            <select class="custom-select" id="sceneSel">
+                                <!-- Scenes are auto loaded in loadDevice.js -->
+                                <option value="0" selected>Select a scene</option>
+                            </select>
+
+                            <!-- Speed -->
+                            <div class="range-slider" id="speed">
+                                <h5>Speed</h5>
+                                <input class="range-slider__range" name="speed" id="percent" type="range" value="50" min="1" max="200">
+                                <span class="range-slider__value">0</span>
+                            </div>
+
+                        </div>
+
+                        <div id="color-temp" hidden>
+
+                            <div class="range-slider">
+                                <h5>Color Temperature</h5>
+                                <input class="range-slider__range" id="kelvin" type="range" value="2500" min="2200" max="6500">
+                                <span class="range-slider__value">0</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div id="universal-functions">
+
+                        <!-- Brightness -->
+                        <div class="range-slider" id="brightness">
+                            <h5>Brightness</h5>
+                            <input class="range-slider__range" name="brightness" id="percent-255" type="range" value="128" min="1" max="255">
+                            <span class="range-slider__value">0</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </main>
+
+        <!-- </div> -->
+    </div>
+
+    <!-- JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <!--jQuery-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!--Plugin JavaScript file-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+
+    <!-- <script type="module" src="js/wiz_api.js"></script> -->
+
+    <script src="./js/loadDevice.js"></script>
+
+    <script>
+        var rangeSlider = function() {
+        var slider = $('.range-slider'),
+            range = $('.range-slider__range'),
+            value = $('.range-slider__value');
+            
+        slider.each(function() {
+
+            value.each(function() {
+                var value = $(this).prev().attr('value');
+
+                if ($(this).attr('id') === 'kelvin') {
+
+                    $(this).html(value + 'K');
+
+                } else if ($(this).attr('id') === 'percent-255'){
+
+                    let percent = (this.value / 255) * 100;
+                    $(this).html(Math.round(percent) + '%');
+
+                } else if ($(this).attr('id') === 'percent'){
+
+                    $(this).html(value + '%');
+
+                } else {
+
+                    $(this).html(value);
+                }
+            });
+
+            range.on('input', function() {
+                if ($(this).attr('id') === 'kelvin') {
+
+                    $(this).next(value).html(this.value + 'K');
+
+                } else if ($(this).attr('id') === 'percent-255'){
+
+                    let percent = (this.value / 255) * 100;
+                    $(this).next(value).html(Math.round(percent) + '%');
+
+                } else if ($(this).attr('id') === 'percent'){
+
+                    $(this).next(value).html(this.value + '%');
+
+                } else {
+                    $(this).next(value).html(this.value);
+
+                }
+            });
+        });
+        };
+
+        rangeSlider();
+    </script>
+
+
+    <script>
+
+        const electron = require('electron');
+        const {ipcRenderer} = electron;
+
+        const {loadDevicesFromFile} = require('./js/importDevices.js');
+        loadDevicesFromFile();
+
+        const storage = require('electron-json-storage');
+        const dataPath = storage.getDataPath();
+
+        const ul = document.querySelector('section ul');
+
+        // Catch add ip
+        ipcRenderer.on('ip:add', (e, item) => {
+            let rawdata = fs.readFileSync(dataPath + '/devices.json');
+            let devices = JSON.parse(rawdata);
+            let lastID = devices.devices.length;
+
+            let li = document.createElement('li');
+                li.classList.add('list-group-item');
+                li.setAttribute("onclick", "loadDevice(this.id)")
+                li.setAttribute("id", "device-" + lastID+1);
+            const ItemText = document.createTextNode(item);
+            li.appendChild(ItemText);
+            ul.appendChild(li);
+
+            devices.devices.push({
+                "id": lastID+1,
+                "ip": item
+            })
+
+            fs.writeFile(dataPath + '/devices.json', Buffer.from(JSON.stringify(devices)), err => {
+                if (err) throw err;
+            });
+        });
+
+        // Remove on dbl click
+        ul.addEventListener('contextmenu', e => {
+            let id = e.target.getAttribute('id').slice(7);
+            
+            let rawdata = fs.readFileSync(dataPath + '/devices.json');
+            let devices = JSON.parse(rawdata);
+            let temp = devices;
+
+            devices.devices = devices.devices.filter(device => device.id !== parseInt(id));
+            console.log(devices);
+            fs.writeFile(dataPath + '/devices.json', Buffer.from(JSON.stringify(devices)), err => {
+                if (err) throw err;
+            });
+            e.target.remove();
+        })
+
+    </script>
+
+    
+</body>
+</html>

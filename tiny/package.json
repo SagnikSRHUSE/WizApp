@@ -1,0 +1,39 @@
+{
+  "name": "wizapp",
+  "version": "0.0.1",
+  "description": "Electron JS application for Wiz Light bulbs",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "author": "Zendovo",
+  "license": "MIT",
+  "dependencies": {
+    "electron-json-storage": "^4.1.8",
+    "fix-path": "^3.0.0",
+    "jquery": "^3.4.1",
+    "xhr2": "^0.2.0"
+  },
+  "devDependencies": {
+    "electron": "^8.2.0",
+    "electron-builder": "^22.4.1",
+    "electron-packager": "^14.2.1"
+  },
+  "build": {
+    "appId": "com.zendovo.wiz",
+    "linux": {
+      "target": "AppImage",
+      "executableName": "Wiz Lightning Control",
+      "icon": "./assets/icons/png/icon.png",
+      "synopsis": "Control your Wiz Light Bulb",
+      "category": "Utility"
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "./assets/icons/png/icon.png"
+    }
+  }
+}
